@@ -17,3 +17,5 @@ VALUES
 
 ## SI SE QUIERE USAR EL SEEDER (YA CREADO)
 ```bash
+php artisan migrate:fresh --seed
+```
