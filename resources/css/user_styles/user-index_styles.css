@@ -1,0 +1,14 @@
+.main__user-index {
+
+    min-height: 80vh;
+    background-color: black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: larger;
+    padding: 2em;
+
+}
