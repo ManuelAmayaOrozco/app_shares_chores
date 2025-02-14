@@ -27,7 +27,7 @@ class UserController extends Controller
 
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
-            return redirect()->route('user.showLogin')->withErrors($validator)->withInput();
+            return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
         // SI EL LOGIN ES INCORRECTO, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
@@ -36,7 +36,7 @@ class UserController extends Controller
         $user = User::where('email', $userEmail)->first();
         if(!password_verify($userPassword, $user->password)) {
             $validator->errors()->add('credentials', 'Credenciales incorrectas');
-            return redirect()->route('user.showLogin')->withErrors($validator)->withInput();
+            return redirect()->route('user_views.login')->withErrors($validator)->withInput();
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL LOGIN ES CORRECTO) CARGAR LA VISTA PRINCIPAL DEL USUARIO.
@@ -53,9 +53,10 @@ class UserController extends Controller
             'email' => $user->email,
             'password' => $userPassword,
         ];
-        if (Auth::attempt($credentials)) {
-            $chores = $user->chores()->get();
+        if (Auth::attempt($credentials)) { // Auth::attempt crea una session en la BD con las credenciales
+            $request->session()->regenerate();
 
+            $chores = $user->chores()->get();
             return view('user_views.index', compact('chores', 'user')); // CARGA LA VIEW PRINCIPAL CON LA INFO DEL USUARIO
         }
         
@@ -91,8 +92,17 @@ class UserController extends Controller
         );
 
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        $datosUsuario = $request->all();
+        $user = new User();
+        $user->name = $datosUsuario['name'];
+        $user->email = $datosUsuario['email'];
+        $user->password = $datosUsuario['password'];
+        $user->save();
 
         return view('user_views.login'); // CARGA LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
     }
