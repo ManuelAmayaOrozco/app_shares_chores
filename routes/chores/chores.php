@@ -12,6 +12,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/rutaProtegida', function() {
         return view('viewProtegida');
     });
+
+    // Insertar tareas
+    Route::get('/register', [ChoreController::class, 'showRegisterChore'])->name('chore.showRegisterChore');
+    Route::post('/register', [ChoreController::class, 'doRegisterChore'])->name('chore.doRegisterChore');
 });
 
 // Prueba de no protegida

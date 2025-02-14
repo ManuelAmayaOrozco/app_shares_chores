@@ -42,4 +42,8 @@
         </tbody>
     </table>
 
+    <a href="{{ route('chore.showRegisterChore') }}" class="navigation__a">
+        INSERTAR NUEVA TAREA
+    </a>
+
 </main>
