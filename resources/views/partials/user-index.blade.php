@@ -1,36 +1,45 @@
 @vite('resources/css/user_styles/user-index_styles.css')
 <main class="main__user-index">
-    <p>Hola usuario, esta es tu página principal. En esta página principal aparecerán los siguientes datos:</p>
-    <p>Una lista de tareas asignadas, tanto las tareas realizadas como las pendientes con dos botones al lado de cada tarea,<br>
-        uno para marcar la tarea como realizada y otro para eliminar la tarea
-    </p>
-    <p>Los botones que pongo aquí son sólo un ejemplo visual de cómo se podría ver, pero el diseño es libre</p>
-    <ul>
-        <li>TAREA 1
-            <div style="display: inline; margin-left:1em;">
-                <button type="button" class="btn btn-success">Hecha</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
-            </div>
-        </li>
-        <li>TAREA 2<div style="display: inline; margin-left:1em;">
-                <button type="button" class="btn btn-success">Hecha</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
-            </div>
-        </li>
-        <li>TAREA 3<div style="display: inline; margin-left:1em;">
-                <button type="button" class="btn btn-success">Hecha</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
-            </div>
-        </li>
-        <li>TAREA 4<div style="display: inline; margin-left:1em;">
-                <button type="button" class="btn btn-success">Hecha</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
-            </div>
-        </li>
-        <li>TAREA 5<div style="display: inline; margin-left:1em;">
-                <button type="button" class="btn btn-success">Hecha</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
-            </div>
-        </li>
-    </ul>
+    <p>Hola {{$user->name}}, esta es tu página principal. En esta página principal aparecerán los siguientes datos:</p>
+
+    <table class="table user-index__table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Marcar hecha</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $nChore = 1 @endphp
+            @foreach($chores as $chore)
+            <tr>
+                <th scope="row">{{$nChore}}</th>
+                <td>{{ $chore->name }}</td>
+                <td>{{ $chore->description }}</td>
+                <td>{{ $chore->status }}</td>
+                <td>
+                    <form action="{{ route('chore.updateStatus', ['id' => $chore->id]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success" {{$chore->status == App\Enums\Status::PENDING->value ? '':'disabled'}}>Hecha</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ route('chore.delete', ['id' => $chore->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Borrar</button>
+                    </form>
+                </td>
+
+                @php $nChore++ @endphp
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
 </main>

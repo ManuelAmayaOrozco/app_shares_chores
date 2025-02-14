@@ -3,7 +3,7 @@
         LOGO HOME
     </div>
     <nav class="header__navigation">
-        <a href="{{ route('user.showLogin') }}" class="navigation__a">
+        <a href="{{ route('login') }}" class="navigation__a">
             LOGIN
         </a>
         <a href="{{ route('user.showRegister') }}" class="navigation__a">

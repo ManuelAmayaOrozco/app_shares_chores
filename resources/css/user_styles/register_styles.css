@@ -7,16 +7,17 @@
 }
 .register__register_form {
 
-    min-width: 30%;
-    aspect-ratio: 1 / 1;
+    width: 20%;
+    aspect-ratio: 5/1;
     background-color: #fb8500;
     border-radius: 10%;
     border: 2px solid #ffb703;
     padding: 2em;
-    row-gap: 1em;
+    row-gap: 2em;
 
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 
 }
 
